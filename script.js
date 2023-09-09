@@ -1,4 +1,5 @@
-function computerSelection() {
+// Game Logic
+function computerRandomise() {
     // Create a random number
     const randomNum = Math.random();
     let selection;
@@ -15,10 +16,11 @@ function computerSelection() {
     return selection;
 }
 
-function playRound(playerSelection, computerSelection) {
+// Game Logic
+function playRound(playerSelection) {
     // Removing case ins
     playerSelection = playerSelection.toLowerCase();
-    computerSelection = computerSelection.toLowerCase();
+    computerSelection = computerRandomise();
     // Defining winning logic using object
     // key = player ; value = winning condition for player
     const rpsLogic = {'rock': 'scissors', 'paper': 'rock', 'scissors': 'paper'};
@@ -39,23 +41,27 @@ function playRound(playerSelection, computerSelection) {
     return [outcome, playerSelection, computerSelection];
 }
 
-function game(maxRound = 1) {
-    let score = {player: 0, computer: 0};
-    let result;
+// Initialisation
+const score = {'player': 0, 'computer': 0};
+const rpsButtons = document.querySelector('.rps_buttons');
+rpsButtons.classList.toggle('invisible');
 
-    for (let round = 0; round < maxRound; round++) {
-        playerSelection = prompt('Rock, Paper, Scissors?: ');
-        result = playRound(playerSelection, computerSelection());
+// Change visibility of items
+function showControls() {
+    
+    rpsButtons.classList.remove('invisible');
 
-        if (result[0] === 'result: Player wins') {
-            score.player++;
-        } else if (result[0] === 'result: Computer wins') {
-            score.computer++;
-        }
+    const scoreText = document.createElement('p');
+    scoreText.textContent = `Player: ${score.player} Computer: ${score.computer}`;
 
-        console.log(`Player chose ${result[1]}, Computer chose ${result[2]}, ${result[0]}`)
-        console.log(score);
-    }
+    const results = document.querySelector('.results');
+    results.appendChild(scoreText);
 }
 
-// game();
+const playBtn = document.querySelector('.playBtn')
+playBtn.addEventListener('click', showControls, {once: true});
+
+const play = document.querySelectorAll('.rps_button');
+play.forEach((element) => element.addEventListener('click', 
+    (e) => console.log(element.id)
+));
