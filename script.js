@@ -30,17 +30,26 @@ function playRound(playerSelection) {
 
     // Deciding the winner
     if (playerSelection === computerSelection) {
-        outcome = `result: draw`;
+        outcome = `Player picked ${playerSelection}
+                   Computer picked ${computerSelection}.
+                   Result: Draw`;
+        outcomeDescription.textContent = outcome;
     } else {
         // if value of selected key is equal to computer choice. Player wins
         outcome = rpsLogic[playerSelection] === computerSelection 
-        ? score.player += 1
-        : score.computer += 1;
+        ? (score.player += 1, 
+           outcomeDescription.textContent = 
+           `Player picked ${playerSelection}
+            Computer picked ${computerSelection}.
+            Player Wins`)
+        : (score.computer += 1,
+           outcomeDescription.textContent = 
+           `Player picked ${playerSelection}\n
+            Computer picked ${computerSelection}\n.
+            Computer Wins`);
     }
 
-    const scoreText = document.querySelector('.score');
     scoreText.textContent = `Player: ${score.player} Computer: ${score.computer}`;
-
 }
 
 // Initialisation
@@ -51,14 +60,19 @@ const score = {'player': 0, 'computer': 0};
 const scoreText = document.createElement('p');
 scoreText.classList.add(...['score', 'invisible']);
 scoreText.textContent = `Player: ${score.player} Computer: ${score.computer}`;
+
+const outcomeDescription = document.createElement('p');
+outcomeDescription.classList.add(...['outcome_description', 'invisible']);
+
 const results = document.querySelector('.results');
 results.appendChild(scoreText);
-
+results.appendChild(outcomeDescription);
 
 // Change visibility of items
 function showControls() {
     rpsButtons.classList.remove('invisible');
-    scoreText.classList.remove('invisible');    
+    scoreText.classList.remove('invisible');
+    outcomeDescription.classList.remove('invisible');    
 }
 
 
