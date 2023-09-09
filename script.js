@@ -34,34 +34,38 @@ function playRound(playerSelection) {
     } else {
         // if value of selected key is equal to computer choice. Player wins
         outcome = rpsLogic[playerSelection] === computerSelection 
-        ? `result: Player wins` 
-        : `result: Computer wins` ;
+        ? score.player += 1
+        : score.computer += 1;
     }
 
-    return [outcome, playerSelection, computerSelection];
+    const scoreText = document.querySelector('.score');
+    scoreText.textContent = `Player: ${score.player} Computer: ${score.computer}`;
+
 }
 
 // Initialisation
-const score = {'player': 0, 'computer': 0};
 const rpsButtons = document.querySelector('.rps_buttons');
 rpsButtons.classList.toggle('invisible');
 
+const score = {'player': 0, 'computer': 0};
+const scoreText = document.createElement('p');
+scoreText.classList.add(...['score', 'invisible']);
+scoreText.textContent = `Player: ${score.player} Computer: ${score.computer}`;
+const results = document.querySelector('.results');
+results.appendChild(scoreText);
+
+
 // Change visibility of items
 function showControls() {
-    
     rpsButtons.classList.remove('invisible');
-
-    const scoreText = document.createElement('p');
-    scoreText.textContent = `Player: ${score.player} Computer: ${score.computer}`;
-
-    const results = document.querySelector('.results');
-    results.appendChild(scoreText);
+    scoreText.classList.remove('invisible');    
 }
+
 
 const playBtn = document.querySelector('.playBtn')
 playBtn.addEventListener('click', showControls, {once: true});
 
 const play = document.querySelectorAll('.rps_button');
 play.forEach((element) => element.addEventListener('click', 
-    (e) => console.log(element.id)
+() => playRound(element.id)
 ));
